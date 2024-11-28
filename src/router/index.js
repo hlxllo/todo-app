@@ -1,13 +1,20 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Menu from '@/views/Menu/index.vue'
+import Layout from '@/views/Layout/index.vue'
+import Overview from '@/views/Overview/index.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   // path和component对应关系的位置
   routes: [
     {
-      path: '/menu',
-      component: Menu
+      path: '/',
+      component: Layout,
+      children: [
+        {
+          path: 'overview',
+          component: Overview
+        }
+      ]
     }
   ],
   // 定制路由滚动行为

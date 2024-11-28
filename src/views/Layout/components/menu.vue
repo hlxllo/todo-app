@@ -12,7 +12,7 @@
         </el-menu-item>
       </el-tooltip>
       <el-tooltip class="box-item" effect="dark" content="添加任务" placement="right" :disabled="!isCollapse">
-        <el-menu-item index="0">
+        <el-menu-item index="0" @click="$router.push('/')">
           <el-icon>
             <Plus />
           </el-icon>
@@ -20,7 +20,7 @@
         </el-menu-item>
       </el-tooltip>
       <el-tooltip class="box-item" effect="dark" content="搜索" placement="right" :disabled="!isCollapse">
-        <el-menu-item index="1">
+        <el-menu-item index="1" @click="$router.push('/')">
           <el-icon>
             <Search />
           </el-icon>
@@ -28,7 +28,7 @@
         </el-menu-item>
       </el-tooltip>
       <el-tooltip class="box-item" effect="dark" content="收件箱" placement="right" :disabled="!isCollapse">
-        <el-menu-item index="2">
+        <el-menu-item index="2" @click="$router.push('/')">
           <el-icon>
             <MessageBox />
           </el-icon>
@@ -36,7 +36,7 @@
         </el-menu-item>
       </el-tooltip>
       <el-tooltip class="box-item" effect="dark" content="今天" placement="right" :disabled="!isCollapse">
-        <el-menu-item index="3">
+        <el-menu-item index="3" @click="$router.push('/')">
           <el-icon>
             <Collection />
           </el-icon>
@@ -44,7 +44,7 @@
         </el-menu-item>
       </el-tooltip>
       <el-tooltip class="box-item" effect="dark" content="预览" placement="right" :disabled="!isCollapse">
-        <el-menu-item index="4">
+        <el-menu-item index="4" @click="$router.push('overview')">
           <el-icon>
             <Calendar />
           </el-icon>
@@ -52,7 +52,7 @@
         </el-menu-item>
       </el-tooltip>
       <el-tooltip class="box-item" effect="dark" content="过滤器&标签" placement="right" :disabled="!isCollapse">
-        <el-menu-item index="5">
+        <el-menu-item index="5" @click="$router.push('/')">
           <el-icon>
             <Menu />
           </el-icon>
@@ -64,6 +64,7 @@
 </el-row></template>
 
 <script setup>
+import { useRoute } from 'vue-router';
 import {
   Document,
   Menu as IconMenu,
@@ -82,11 +83,13 @@ const isCollapse = ref(false)
 const changeContent = computed(() => {
   return isCollapse.value ? '展开' : '合起'
 })
+
+const route = useRoute()
 </script>
 
 <style scoped>
 .el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 200px;
+  width: 300px;
   min-height: 400px;
 }
 </style>
