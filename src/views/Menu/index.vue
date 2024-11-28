@@ -1,0 +1,92 @@
+<template><el-row class="tac">
+  <el-col :span="10">
+    <el-menu active-text-color="#b01f00" background-color="#fcfaf8" class="el-menu-vertical-demo" :collapse="isCollapse"
+      default-active="2" text-color="#4a2020" @open="handleOpen" @close="handleClose">
+      <el-tooltip class="box-item" effect="dark" :content="changeContent" placement="right" :disabled="!isCollapse">
+        <el-menu-item index="-1" @click="isCollapse = !isCollapse">
+          <el-icon>
+            <Expand v-if="isCollapse" />
+            <Fold v-else />
+          </el-icon>
+          <span>合起</span>
+        </el-menu-item>
+      </el-tooltip>
+      <el-tooltip class="box-item" effect="dark" content="添加任务" placement="right" :disabled="!isCollapse">
+        <el-menu-item index="0">
+          <el-icon>
+            <Plus />
+          </el-icon>
+          <span>添加任务</span>
+        </el-menu-item>
+      </el-tooltip>
+      <el-tooltip class="box-item" effect="dark" content="搜索" placement="right" :disabled="!isCollapse">
+        <el-menu-item index="1">
+          <el-icon>
+            <Search />
+          </el-icon>
+          <span>搜索</span>
+        </el-menu-item>
+      </el-tooltip>
+      <el-tooltip class="box-item" effect="dark" content="收件箱" placement="right" :disabled="!isCollapse">
+        <el-menu-item index="2">
+          <el-icon>
+            <MessageBox />
+          </el-icon>
+          <span>收件箱</span>
+        </el-menu-item>
+      </el-tooltip>
+      <el-tooltip class="box-item" effect="dark" content="今天" placement="right" :disabled="!isCollapse">
+        <el-menu-item index="3">
+          <el-icon>
+            <Collection />
+          </el-icon>
+          <span>今天</span>
+        </el-menu-item>
+      </el-tooltip>
+      <el-tooltip class="box-item" effect="dark" content="预览" placement="right" :disabled="!isCollapse">
+        <el-menu-item index="4">
+          <el-icon>
+            <Calendar />
+          </el-icon>
+          <span>预览</span>
+        </el-menu-item>
+      </el-tooltip>
+      <el-tooltip class="box-item" effect="dark" content="过滤器&标签" placement="right" :disabled="!isCollapse">
+        <el-menu-item index="5">
+          <el-icon>
+            <Menu />
+          </el-icon>
+          <span>过滤器&标签</span>
+        </el-menu-item>
+      </el-tooltip>
+    </el-menu>
+  </el-col>
+</el-row></template>
+
+<script setup>
+import {
+  Document,
+  Menu as IconMenu,
+  Location,
+  Setting,
+} from '@element-plus/icons-vue'
+import { ref, computed } from 'vue';
+const handleOpen = (key, keyPath) => {
+  console.log(key, keyPath)
+}
+const handleClose = (key, keyPath) => {
+  console.log(key, keyPath)
+}
+// 初始状态为展开
+const isCollapse = ref(false)
+const changeContent = computed(() => {
+  return isCollapse.value ? '展开' : '合起'
+})
+</script>
+
+<style scoped>
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  width: 200px;
+  min-height: 400px;
+}
+</style>
