@@ -3,7 +3,7 @@
   <div class="summary">{{ fmd }}</div>
   <hr>
   <div v-for="duty in duties" :key="duty.id">{{ duty.name }}</div>
-  <hr>
+  <hr v-if="duties.length !== 0">
 
   <div class="add">
     <el-icon>
@@ -17,20 +17,17 @@
 <script setup>
 import { format } from 'date-fns';
 const props = defineProps({
-  summary: {
+  date: {
     type: Date,
     default: new Date()
   },
   duties: {
     type: Array,
-    default: [
-      { 'id': 1, 'name': '扫地' },
-      { 'id': 2, 'name': '洗车' },
-    ]
+    default: []
   }
 })
 
-const fmd = format(props.summary, 'MM月dd日');
+const fmd = format(props.date, 'MM月dd日');
 </script>
 
 <style scoped>
