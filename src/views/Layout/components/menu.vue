@@ -1,7 +1,7 @@
-<template><el-row class="tac container a">
+<template><el-row class="tac">
   <el-col :span="10" class="full-height">
     <el-menu active-text-color="#b01f00" background-color="#fcfaf8" class="el-menu-vertical-demo full-height"
-      :collapse="isCollapse" default-active="2" text-color="#4a2020" @open="handleOpen" @close="handleClose">
+      :collapse="isCollapse" default-active="4" text-color="#4a2020" @open="handleOpen" @close="handleClose">
       <el-tooltip class="box-item" effect="dark" :content="changeContent" placement="right" :disabled="!isCollapse">
         <el-menu-item index="-1" @click="isCollapse = !isCollapse">
           <el-icon>

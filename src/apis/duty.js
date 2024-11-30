@@ -31,3 +31,14 @@ export function addDutyAPI(name, date) {
     }
   })
 }
+
+// 修改 duty
+export function updateDutyAPI(id, name) {
+  return httpInstance({
+    url: '/duty/' + id,
+    method: 'PUT',
+    data: {
+      name
+    }
+  })
+}

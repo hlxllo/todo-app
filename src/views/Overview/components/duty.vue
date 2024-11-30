@@ -7,7 +7,7 @@
   <div v-for="duty in duties" :key="duty.id" class="duties">
     <el-button @click="del(duty.id)" plain color="black" type="success" :icon="showIconMap[duty.id] ? Check : ''" circle
       size="small" @mouseenter="showIconMap[duty.id] = true" @mouseleave="showIconMap[duty.id] = false" />
-    <span class="dname">{{ duty.name }}</span>
+    <span class="dname" @click="updateDutyByName(duty.id, duty.name)">{{ duty.name }}</span>
   </div>
   <hr v-if="duties.length !== 0">
 
@@ -15,17 +15,35 @@
     <el-icon>
       <Plus />
     </el-icon>
-    <span class="add">添加任务</span>
+    <span class="add-duty">添加任务</span>
   </div>
 
-  <!-- 弹窗 -->
-  <el-dialog title="添加任务" v-model="showAddDialog" width="30%">
+  <!-- 添加任务弹窗 -->
+  <el-dialog title="添加任务" v-model="showAddDialog" width="30%" center>
     <el-input v-model="newDutyName" placeholder="请输入任务名称"></el-input>
-    <span slot="footer" class="dialog-footer">
-      <el-button @click="showAddDialog = false">取消</el-button>
-      <el-button type="primary" @click="add">确定</el-button>
-    </span>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="showAddDialog = false">取消</el-button>
+        <el-button type="primary" @click="add">
+          确定
+        </el-button>
+      </div>
+    </template>
   </el-dialog>
+
+  <!-- 修改任务弹窗 -->
+  <el-dialog title="修改任务" v-model="showUpdateDialog" width="30%" center>
+    <el-input v-model="updateDutyName"></el-input>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="showUpdateDialog = false">取消</el-button>
+        <el-button type="primary" @click="update">
+          确定
+        </el-button>
+      </div>
+    </template>
+  </el-dialog>
+
 </div>
 </template>
 
@@ -33,7 +51,7 @@
 import { format, isToday, isTomorrow } from 'date-fns';
 import { computed, reactive, ref } from 'vue';
 import { Check, Plus } from '@element-plus/icons-vue';
-import { delDutyByIdAPI, addDutyAPI } from '@/apis/duty';
+import { delDutyByIdAPI, addDutyAPI, updateDutyAPI } from '@/apis/duty';
 
 const props = defineProps({
   date: {
@@ -71,6 +89,11 @@ const addDuty = async (name, date) => {
   props.duties.push(res)
 };
 
+// 修改 duty
+const updateDuty = async (id, name) => {
+  await updateDutyAPI(id, name);
+};
+
 // 移除前端的数组元素并删除后端的数据
 const del = async (id) => {
   for (let i = 0; i < props.duties.length; i++) {
@@ -82,9 +105,12 @@ const del = async (id) => {
   await delDutyById(id);
 };
 
-// 弹窗和新增任务的逻辑
+// 弹窗和新增修改任务的逻辑
 const showAddDialog = ref(false);
+const showUpdateDialog = ref(false);
 const newDutyName = ref('');
+const updateDutyName = ref('');
+const updateDutyId = ref(-1);
 
 const add = () => {
   if (newDutyName.value.trim()) {
@@ -98,6 +124,27 @@ const add = () => {
     showAddDialog.value = false;
   }
 };
+
+const update = () => {
+  if (updateDutyName.value.trim()) {
+
+    const result = props.duties.find(duty => duty.id === updateDutyId.value)
+
+    result.name = updateDutyName.value;
+    // 修改 duty
+    updateDuty(updateDutyId.value, updateDutyName.value);
+    updateDutyName.value = '';
+    updateDutyId.value = -1;
+    showUpdateDialog.value = false;
+  }
+};
+
+// 修改 duty 的逻辑
+const updateDutyByName = (id, name) => {
+  showUpdateDialog.value = true;
+  updateDutyName.value = name;
+  updateDutyId.value = id;
+}
 </script>
 
 <style scoped>
@@ -110,9 +157,16 @@ const add = () => {
   line-height: 30px;
 }
 
+.add-duty {
+  margin-left: 15px;
+}
+
 .add {
-  margin-left: 10px;
   cursor: pointer;
+}
+
+.add:hover {
+  color: rgb(227, 76, 62);
 }
 
 .dname {
