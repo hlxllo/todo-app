@@ -79,4 +79,8 @@ async function load() {
   margin-bottom: 20px;
   padding-top: 60px;
 }
+
+.duties {
+  margin-bottom: 20px;
+}
 </style>

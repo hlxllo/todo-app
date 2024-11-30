@@ -1,7 +1,7 @@
-<template><el-row class="tac">
-  <el-col :span="10">
-    <el-menu active-text-color="#b01f00" background-color="#fcfaf8" class="el-menu-vertical-demo" :collapse="isCollapse"
-      default-active="2" text-color="#4a2020" @open="handleOpen" @close="handleClose">
+<template><el-row class="tac container a">
+  <el-col :span="10" class="full-height">
+    <el-menu active-text-color="#b01f00" background-color="#fcfaf8" class="el-menu-vertical-demo full-height"
+      :collapse="isCollapse" default-active="2" text-color="#4a2020" @open="handleOpen" @close="handleClose">
       <el-tooltip class="box-item" effect="dark" :content="changeContent" placement="right" :disabled="!isCollapse">
         <el-menu-item index="-1" @click="isCollapse = !isCollapse">
           <el-icon>
@@ -72,12 +72,15 @@ import {
   Setting,
 } from '@element-plus/icons-vue'
 import { ref, computed } from 'vue';
+
 const handleOpen = (key, keyPath) => {
   console.log(key, keyPath)
 }
+
 const handleClose = (key, keyPath) => {
   console.log(key, keyPath)
 }
+
 // 初始状态为展开
 const isCollapse = ref(false)
 const changeContent = computed(() => {
@@ -88,8 +91,18 @@ const route = useRoute()
 </script>
 
 <style scoped>
+.full-height {
+  height: 100vh;
+}
+
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 300px;
-  min-height: 400px;
+}
+
+.tac {
+  position: sticky;
+  top: 0;
+  left: 0;
+  height: 100vh;
 }
 </style>
