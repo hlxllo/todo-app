@@ -65,8 +65,6 @@ async function load() {
 
 // 滚动到选中日期
 const scrollToDate = async (selectedDate) => {
-  console.log('变化了');
-
   const target = duties.value.find((duty) => format(duty.date, 'yyyy-MM-dd') === format(selectedDate, 'yyyy-MM-dd'));
   if (target) {
     await nextTick(); // 确保 DOM 渲染完成
