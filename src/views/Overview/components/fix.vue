@@ -1,5 +1,5 @@
 <template>
-<div class="container" :class="{ show: y > 78 }">
+<div class="container" :class="{ show: y > 150 }">
   <div class="summary">预览</div>
   <div class="demo-date-picker">
     <div class="block">
@@ -35,7 +35,7 @@ watch(value, (newVal) => {
 <style scoped>
 .container {
   width: 100%;
-  height: 100px;
+  height: 65px;
   position: fixed;
   left: 300px;
   top: 0;
@@ -45,7 +45,7 @@ watch(value, (newVal) => {
   transform: translateY(-200%);
   opacity: 1;
   margin: 0;
-  font-size: 28px;
+  font-size: 20px;
   margin-bottom: 20px;
   display: flex;
   flex-direction: column;
@@ -56,5 +56,9 @@ watch(value, (newVal) => {
   transition: all 0.3s linear;
   transform: none;
   opacity: 1;
+}
+
+.summary {
+  margin-bottom: 5px;
 }
 </style>
