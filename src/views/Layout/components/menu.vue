@@ -11,54 +11,54 @@
           <span>合起</span>
         </el-menu-item>
       </el-tooltip>
-      <el-tooltip class="box-item" effect="dark" content="添加任务" placement="right" :disabled="!isCollapse">
-        <el-menu-item index="0" @click="$router.push('/')">
-          <el-icon>
-            <Plus />
-          </el-icon>
-          <span>添加任务</span>
-        </el-menu-item>
-      </el-tooltip>
-      <el-tooltip class="box-item" effect="dark" content="搜索" placement="right" :disabled="!isCollapse">
-        <el-menu-item index="1" @click="$router.push('/')">
-          <el-icon>
-            <Search />
-          </el-icon>
-          <span>搜索</span>
-        </el-menu-item>
-      </el-tooltip>
-      <el-tooltip class="box-item" effect="dark" content="收件箱" placement="right" :disabled="!isCollapse">
-        <el-menu-item index="2" @click="$router.push('/')">
-          <el-icon>
-            <MessageBox />
-          </el-icon>
-          <span>收件箱</span>
-        </el-menu-item>
-      </el-tooltip>
-      <el-tooltip class="box-item" effect="dark" content="今天" placement="right" :disabled="!isCollapse">
-        <el-menu-item index="3" @click="$router.push('/')">
-          <el-icon>
-            <Collection />
-          </el-icon>
-          <span>今天</span>
-        </el-menu-item>
-      </el-tooltip>
-      <el-tooltip class="box-item" effect="dark" content="预览" placement="right" :disabled="!isCollapse">
-        <el-menu-item index="4" @click="$router.push('overview')">
-          <el-icon>
-            <Calendar />
-          </el-icon>
-          <span>预览</span>
-        </el-menu-item>
-      </el-tooltip>
-      <el-tooltip class="box-item" effect="dark" content="过滤器&标签" placement="right" :disabled="!isCollapse">
-        <el-menu-item index="5" @click="$router.push('/')">
-          <el-icon>
-            <Menu />
-          </el-icon>
-          <span>过滤器&标签</span>
-        </el-menu-item>
-      </el-tooltip>
+      <!-- <el-tooltip class="box-item" effect="dark" content="添加任务" placement="right" :disabled="!isCollapse"> -->
+      <el-menu-item index="0" @click="$router.push('/')">
+        <el-icon>
+          <Plus />
+        </el-icon>
+        <span>添加任务</span>
+      </el-menu-item>
+      <!-- </el-tooltip>
+      <el-tooltip class="box-item" effect="dark" content="搜索" placement="right" :disabled="!isCollapse"> -->
+      <el-menu-item index="1" @click="$router.push('/')">
+        <el-icon>
+          <Search />
+        </el-icon>
+        <span>搜索</span>
+      </el-menu-item>
+      <!-- </el-tooltip>
+      <el-tooltip class="box-item" effect="dark" content="收件箱" placement="right" :disabled="!isCollapse"> -->
+      <el-menu-item index="2" @click="$router.push('/')">
+        <el-icon>
+          <MessageBox />
+        </el-icon>
+        <span>收件箱</span>
+      </el-menu-item>
+      <!-- </el-tooltip>
+      <el-tooltip class="box-item" effect="dark" content="今天" placement="right" :disabled="!isCollapse"> -->
+      <el-menu-item index="3" @click="$router.push('/')">
+        <el-icon>
+          <Collection />
+        </el-icon>
+        <span>今天</span>
+      </el-menu-item>
+      <!-- </el-tooltip>
+      <el-tooltip class="box-item" effect="dark" content="预览" placement="right" :disabled="!isCollapse"> -->
+      <el-menu-item index="4" @click="$router.push('overview')">
+        <el-icon>
+          <Calendar />
+        </el-icon>
+        <span>预览</span>
+      </el-menu-item>
+      <!-- </el-tooltip>
+      <el-tooltip class="box-item" effect="dark" content="过滤器&标签" placement="right" :disabled="!isCollapse"> -->
+      <el-menu-item index="5" @click="$router.push('/')">
+        <el-icon>
+          <Menu />
+        </el-icon>
+        <span>过滤器&标签</span>
+      </el-menu-item>
+      <!-- </el-tooltip> -->
     </el-menu>
   </el-col>
 </el-row></template>

@@ -7,66 +7,82 @@
     </div>
   </div>
   <div class="duties" v-infinite-scroll="load">
-    <Duty v-for="duty in duties" :key="duty.id" :date="duty.date" :duties="duty.duties" />
+    <Duty v-for="duty in duties" :key="duty.id" :date="duty.date" :duties="duty.duties" :id="'duty-' + duty.id" />
   </div>
 </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch, nextTick } from 'vue';
 import Duty from './duty.vue';
 import { getDutiesAPI } from '@/apis/duty';
 import { format } from 'date-fns';
 
-// 根据日期查询任务
-// 分页参数默认值
-const page = ref(1)
-const size = ref(20)
-const duties = ref([])
-const date = new Date()
-let milliseconds = Date.now() - d
-const d = 1000 * 60 * 60 * 24
-let id = 0
+// 分页参数和数据
+const page = ref(1);
+const size = ref(20);
+const duties = ref([]);
+// const loading = ref(false);
+const date = new Date();
+let milliseconds = Date.now() - d;
+const d = 1000 * 60 * 60 * 24;
+let id = 0;
 
+// 获取任务数据
 const getDuties = async (date, page, size) => {
-  const res = await getDutiesAPI(date, page, size)
-  console.log(res);
-  // 创建一个等长数组
-  const arr = new Array(size)
+  // loading.value = true;
+  const res = await getDutiesAPI(date, page, size);
+  const arr = new Array(size);
   for (let i = 0; i < arr.length; i++) {
-    milliseconds += d
-    const duty = { 'id': id++, 'date': new Date(milliseconds), 'duties': [] }
-    arr[i] = duty
-    // 遍历响应结果
+    milliseconds += d;
+    const duty = { id: id++, date: new Date(milliseconds), duties: [] };
+    arr[i] = duty;
     for (let j = 0; j < res.length; j++) {
       const resD = new Date(res[j].date);
-      console.log(res[j]);
-      const gap = parseInt((resD.getTime() - milliseconds) / d)
-      // 如果天数匹配
+      const gap = parseInt((resD.getTime() - milliseconds) / d);
       if (gap === 0) {
-        arr[i].duties.push({ 'id': res[j].id, 'name': res[j].name })
+        arr[i].duties.push({ id: res[j].id, name: res[j].name });
       }
     }
   }
-  duties.value = [...duties.value, ...arr]
-  console.log(duties.value);
-}
+  duties.value = [...duties.value, ...arr];
+  // loading.value = false;
+};
 
-// 初始调用一次
-getDuties(format(date, 'yyyy-MM-dd'), page.value, size.value)
+// 初始化获取任务
+getDuties(format(date, 'yyyy-MM-dd'), page.value, size.value);
 
-const value = ref(new Date())
+// 日期选择值
+const value = ref(new Date());
 
+// 禁用日期
 const disabledDate = (time) => {
-  return time.getTime() < Date.now()
-}
+  return time.getTime() < Date.now();
+};
 
 // 无限滚动
 async function load() {
-  page.value++
-  getDuties(format(date, 'yyyy-MM-dd'), page.value, size.value)
+  if (loading.value) return;
+  page.value++;
+  getDuties(format(date, 'yyyy-MM-dd'), page.value, size.value);
 }
 
+// 滚动到选中日期
+const scrollToDate = async (selectedDate) => {
+  const target = duties.value.find((duty) => format(duty.date, 'yyyy-MM-dd') === format(selectedDate, 'yyyy-MM-dd'));
+  if (target) {
+    await nextTick(); // 确保 DOM 渲染完成
+    const element = document.querySelector(`#duty-${target.id}`);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+};
+
+// 监听日期选择变化
+watch(value, (newVal) => {
+  scrollToDate(newVal);
+});
 </script>
 
 <style scoped>

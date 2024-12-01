@@ -5,11 +5,15 @@
   </div>
   <hr>
   <div v-for="duty in duties" :key="duty.id" class="duties">
-    <el-button @click="del(duty.id)" plain color="black" type="success" :icon="showIconMap[duty.id] ? Check : ''" circle
-      size="small" @mouseenter="showIconMap[duty.id] = true" @mouseleave="showIconMap[duty.id] = false" />
+    <el-tooltip class="box-item" effect="dark" content="完成" placement="left">
+      <el-button @click="del(duty.id)" plain color="black" type="success" :icon="showIconMap[duty.id] ? Check : ''"
+        circle size="small" @mouseenter="showIconMap[duty.id] = true" @mouseleave="showIconMap[duty.id] = false" />
+    </el-tooltip>
+
     <span class="dname" @click="updateDutyByName(duty.id, duty.name)">{{ duty.name }}</span>
   </div>
   <hr v-if="duties.length !== 0">
+
 
   <div class="add" @click="showAddDialog = true">
     <el-icon>
@@ -17,6 +21,7 @@
     </el-icon>
     <span class="add-duty">添加任务</span>
   </div>
+
 
   <!-- 添加任务弹窗 -->
   <el-dialog title="添加任务" v-model="showAddDialog" width="30%" center>
