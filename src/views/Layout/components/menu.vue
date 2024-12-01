@@ -74,11 +74,11 @@ import {
 import { ref, computed } from 'vue';
 
 const handleOpen = (key, keyPath) => {
-  console.log(key, keyPath)
+  // console.log(key, keyPath)
 }
 
 const handleClose = (key, keyPath) => {
-  console.log(key, keyPath)
+  // console.log(key, keyPath)
 }
 
 // 初始状态为展开
