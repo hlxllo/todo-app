@@ -36,7 +36,7 @@
       </el-menu-item>
       <!-- </el-tooltip>
       <el-tooltip class="box-item" effect="dark" content="今天" placement="right" :disabled="!isCollapse"> -->
-      <el-menu-item index="3" @click="$router.push('/')">
+      <el-menu-item index="3" @click="$router.push('today')">
         <el-icon>
           <Collection />
         </el-icon>
