@@ -4,7 +4,7 @@
     {{ fmd }} {{ isToday(props.date) ? '今天' : '' }} {{ isTomorrow(props.date) ? '明天' : '' }} {{ weekDay }}
   </div>
   <hr v-if="showHr">
-  <div v-for="duty in duties" :key="duty.id" class="duties">
+  <div v-if="showDuties" v-for="duty in duties" :key="duty.id" class="duties">
     <el-tooltip class="box-item" effect="dark" content="完成" placement="left">
       <el-button @click="del(duty.id)" plain color="black" type="success" :icon="showIconMap[duty.id] ? Check : ''"
         circle size="small" @mouseenter="showIconMap[duty.id] = true" @mouseleave="showIconMap[duty.id] = false" />
@@ -14,7 +14,7 @@
     <br>
     <span v-if="showDate" class="date"> {{ fmd }}</span>
   </div>
-  <hr v-if="duties.length !== 0">
+  <hr v-if="duties.length !== 0 && showDuties">
 
 
   <div class="add" @click="showAddDialog = true" v-if="showAdd">
@@ -56,7 +56,7 @@
 
 <script setup>
 import { format, isToday, isTomorrow } from 'date-fns';
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive, ref, defineEmits, watch, toRefs } from 'vue';
 import { Check, Plus } from '@element-plus/icons-vue';
 import { delDutyByIdAPI, addDutyAPI, updateDutyAPI } from '@/apis/duty';
 
@@ -89,12 +89,21 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
+  showDuties: {
+    type: Boolean,
+    default: true
+  }
 });
+
+// 定义子组件可以触发的事件
+const emit = defineEmits(['getId']);
 
 // 管理每个按钮的 showIcon 状态
 const showIconMap = reactive({});
 
 const value = ref(new Date())
+
+const id = ref(-1)
 
 // 禁用日期
 const disabledDate = (time) => {
@@ -121,6 +130,8 @@ const delDutyById = async (id) => {
 const addDuty = async (name, date) => {
   const res = await addDutyAPI(name, date);
   props.duties.push(res)
+  id.value = res.id
+  emit('getId', id.value)
 };
 
 // 修改 duty
@@ -149,10 +160,13 @@ const updateDutyId = ref(-1);
 const add = () => {
   if (newDutyName.value.trim()) {
     // 添加 duty
+    const date = ref();
     if (props.showCalendar) {
       addDuty(newDutyName.value, format(value.value, 'yyyy-MM-dd'));
+      date.value = value.value;
     } else {
       addDuty(newDutyName.value, format(props.date, 'yyyy-MM-dd'));
+      date.value = props.date;
     }
     // 再次初始化 showIconMap
     props.duties.forEach(duty => {
@@ -183,6 +197,7 @@ const updateDutyByName = (id, name) => {
   updateDutyName.value = name;
   updateDutyId.value = id;
 }
+
 </script>
 
 <style scoped>

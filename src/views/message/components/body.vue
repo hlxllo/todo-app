@@ -3,7 +3,7 @@
   <div class="duties">
     <Duty v-for="duty in duties" :key="duty.id" :date="duty.date" :duties="duty.duties" :show-summary="false"
       :show-hr="false" :show-date="true" :show-add="false" />
-    <Duty :show-summary="false" :show-hr="false" :show-calendar="true" />
+    <Duty @get-id="getId" :show-duties="false" :show-summary="false" :show-hr="false" :show-calendar="true" />
   </div>
   <div v-if="duties.length === 0">
     <div class="desc">
@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import Duty from '@/components/duty.vue';
 import { getDutiesAPI } from '@/apis/duty';
 import { format } from 'date-fns';
@@ -27,8 +27,10 @@ const page = ref(1);
 const size = ref(20);
 const duties = ref([]);
 const today = ref(new Date())
+const addId = ref(-1)
 
 const getDuties = async (date) => {
+  duties.value = []
   const res = await getDutiesAPI(date)
   for (let i = 0; i < res.length; i++) {
     // 如果对象存在则增加任务
@@ -40,9 +42,21 @@ const getDuties = async (date) => {
       duties.value.push({ 'id': res[i].id, 'date': new Date(res[i].date), 'duties': [res[i]] });
     }
   }
-  console.log(duties.value);
+  console.log(duties.value.length);
 
 }
+
+const getId = (id) => { addId.value = id }
+
+watch(addId, () => {
+  // console.log('变化了');
+  getDuties(format(today.value, 'yyyy-MM-dd'))
+})
+
+watch(duties, () => {
+  console.log('变化了');
+
+})
 
 // 初始化获取任务
 getDuties(format(today.value, 'yyyy-MM-dd'));
