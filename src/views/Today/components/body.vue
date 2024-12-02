@@ -1,17 +1,19 @@
 <template>
 <div class="container">
   <div class="duties">
-    <Duty :date="today" :duties="duties" v-if="duties.length !== 0" />
+    <Duty :date="today" :duties="duties" :show-summary="false" :show-hr="false" />
   </div>
-  <div class="desc" v-if="isWeekend(today)">
-    <img src="@/assets/images/holiday.png" alt="">
-    <div class="holiday">享受一个美好的假日！</div>
-    <span>在您设置菜单的效率选项卡中安排休息日。</span>
-  </div>
-  <div class="desc" v-else>
-    <img src="@/assets/images/weekday.png" alt="">
-    <div class="weekday">享受一个美好的假日！</div>
-    <span>在您设置菜单的效率选项卡中安排休息日。</span>
+  <div v-if="duties.length === 0">
+    <div class="desc" v-if="isWeekend(today)">
+      <img src="@/assets/images/holiday.png" alt="">
+      <div class="holiday">享受一个美好的假日！</div>
+      <span>在您设置菜单的效率选项卡中安排休息日。</span>
+    </div>
+    <div class="desc" v-else>
+      <img src="@/assets/images/weekday.png" alt="">
+      <div class="weekday">您今天需要完成什么？</div>
+      <span>通常情况下，在此添加的任务将会在今天截止。</span>
+    </div>
   </div>
 </div>
 </template>
@@ -28,6 +30,8 @@ const page = ref(1);
 const size = ref(20);
 const duties = ref([]);
 const today = ref(new Date())
+const showSummary = ref(false)
+const showHr = ref(false)
 
 const getDuties = async (date) => {
   const res = await getDutiesAPI(date)

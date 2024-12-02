@@ -1,9 +1,9 @@
 <template>
 <div class="container">
-  <div class="summary">
+  <div class="summary" v-if="showSummary">
     {{ fmd }} {{ isToday(props.date) ? '今天' : '' }} {{ isTomorrow(props.date) ? '明天' : '' }} {{ weekDay }}
   </div>
-  <hr>
+  <hr v-if="showHr">
   <div v-for="duty in duties" :key="duty.id" class="duties">
     <el-tooltip class="box-item" effect="dark" content="完成" placement="left">
       <el-button @click="del(duty.id)" plain color="black" type="success" :icon="showIconMap[duty.id] ? Check : ''"
@@ -15,13 +15,12 @@
   <hr v-if="duties.length !== 0">
 
 
-  <div class="add" @click="showAddDialog = true">
+  <div class="add" @click="showAddDialog = true" v-if="showAdd">
     <el-icon>
       <Plus />
     </el-icon>
     <span class="add-duty">添加任务</span>
   </div>
-
 
   <!-- 添加任务弹窗 -->
   <el-dialog title="添加任务" v-model="showAddDialog" width="30%" center>
@@ -66,7 +65,19 @@ const props = defineProps({
   duties: {
     type: Array,
     default: []
-  }
+  },
+  showSummary: {
+    type: Boolean,
+    default: true
+  },
+  showHr: {
+    type: Boolean,
+    default: true
+  },
+  showAdd: {
+    type: Boolean,
+    default: true
+  },
 });
 
 // 管理每个按钮的 showIcon 状态
