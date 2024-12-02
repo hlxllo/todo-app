@@ -11,6 +11,8 @@
     </el-tooltip>
 
     <span class="dname" @click="updateDutyByName(duty.id, duty.name)">{{ duty.name }}</span>
+    <br>
+    <span v-if="showDate" class="date"> {{ fmd }}</span>
   </div>
   <hr v-if="duties.length !== 0">
 
@@ -24,6 +26,7 @@
 
   <!-- 添加任务弹窗 -->
   <el-dialog title="添加任务" v-model="showAddDialog" width="30%" center>
+    <el-date-picker v-if="showCalendar" v-model="value" type="date" :disabled-date="disabledDate" />
     <el-input v-model="newDutyName" placeholder="请输入任务名称"></el-input>
     <template #footer>
       <div class="dialog-footer">
@@ -78,10 +81,25 @@ const props = defineProps({
     type: Boolean,
     default: true
   },
+  showDate: {
+    type: Boolean,
+    default: false
+  },
+  showCalendar: {
+    type: Boolean,
+    default: false
+  },
 });
 
 // 管理每个按钮的 showIcon 状态
 const showIconMap = reactive({});
+
+const value = ref(new Date())
+
+// 禁用日期
+const disabledDate = (time) => {
+  return time.getTime() < Date.now();
+};
 
 // 初始化 showIconMap
 props.duties.forEach(duty => {
@@ -131,7 +149,11 @@ const updateDutyId = ref(-1);
 const add = () => {
   if (newDutyName.value.trim()) {
     // 添加 duty
-    addDuty(newDutyName.value, format(props.date, 'yyyy-MM-dd'));
+    if (props.showCalendar) {
+      addDuty(newDutyName.value, format(value.value, 'yyyy-MM-dd'));
+    } else {
+      addDuty(newDutyName.value, format(props.date, 'yyyy-MM-dd'));
+    }
     // 再次初始化 showIconMap
     props.duties.forEach(duty => {
       showIconMap[duty.id] = false;
@@ -187,5 +209,10 @@ const updateDutyByName = (id, name) => {
 
 .dname {
   margin-left: 15px;
+}
+
+.date {
+  font-size: 14px;
+  margin-left: 30px
 }
 </style>

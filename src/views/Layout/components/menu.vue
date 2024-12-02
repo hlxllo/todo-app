@@ -28,7 +28,7 @@
       </el-menu-item>
       <!-- </el-tooltip>
       <el-tooltip class="box-item" effect="dark" content="收件箱" placement="right" :disabled="!isCollapse"> -->
-      <el-menu-item index="2" @click="$router.push('/')">
+      <el-menu-item index="2" @click="$router.push('message')">
         <el-icon>
           <MessageBox />
         </el-icon>
