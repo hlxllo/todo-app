@@ -10,7 +10,7 @@
         circle size="small" @mouseenter="showIconMap[duty.id] = true" @mouseleave="showIconMap[duty.id] = false" />
     </el-tooltip>
 
-    <span class="dname" @click="updateDutyByName(duty.id, duty.name)">{{ duty.name }}</span>
+    <span class="dname" @click="updateDutyByName(duty.id, duty.name, duty.description)">{{ duty.name }}</span>
     <br>
     <span v-if="showDate" class="date"> {{ fmd }}</span>
   </div>
@@ -28,6 +28,7 @@
   <el-dialog title="添加任务" v-model="showAddDialog" width="30%" center>
     <el-date-picker v-if="showCalendar" v-model="value" type="date" :disabled-date="disabledDate" />
     <el-input v-model="newDutyName" placeholder="请输入任务名称"></el-input>
+    <el-input v-model="newDutyDesc" placeholder="请输入任务详情"></el-input>
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="showAddDialog = false">取消</el-button>
@@ -41,6 +42,7 @@
   <!-- 修改任务弹窗 -->
   <el-dialog title="修改任务" v-model="showUpdateDialog" width="30%" center>
     <el-input v-model="updateDutyName"></el-input>
+    <el-input v-model="updateDutyDesc" :placeholder="updateDutyDesc || '请输入任务详情'"></el-input>
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="showUpdateDialog = false">取消</el-button>
@@ -127,16 +129,16 @@ const delDutyById = async (id) => {
 };
 
 // 根据名称添加 duty
-const addDuty = async (name, date) => {
-  const res = await addDutyAPI(name, date);
+const addDuty = async (name, description, date) => {
+  const res = await addDutyAPI(name, description, date);
   props.duties.push(res)
   id.value = res.id
   emit('getId', id.value)
 };
 
 // 修改 duty
-const updateDuty = async (id, name) => {
-  await updateDutyAPI(id, name);
+const updateDuty = async (id, name, description) => {
+  await updateDutyAPI(id, name, description);
 };
 
 // 移除前端的数组元素并删除后端的数据
@@ -154,7 +156,9 @@ const del = async (id) => {
 const showAddDialog = ref(false);
 const showUpdateDialog = ref(false);
 const newDutyName = ref('');
+const newDutyDesc = ref('');
 const updateDutyName = ref('');
+const updateDutyDesc = ref('');
 const updateDutyId = ref(-1);
 
 const add = () => {
@@ -162,10 +166,10 @@ const add = () => {
     // 添加 duty
     const date = ref();
     if (props.showCalendar) {
-      addDuty(newDutyName.value, format(value.value, 'yyyy-MM-dd'));
+      addDuty(newDutyName.value, newDutyDesc.value, format(value.value, 'yyyy-MM-dd'));
       date.value = value.value;
     } else {
-      addDuty(newDutyName.value, format(props.date, 'yyyy-MM-dd'));
+      addDuty(newDutyName.value, newDutyDesc.value, format(props.date, 'yyyy-MM-dd'));
       date.value = props.date;
     }
     // 再次初始化 showIconMap
@@ -173,6 +177,7 @@ const add = () => {
       showIconMap[duty.id] = false;
     });
     newDutyName.value = '';
+    newDutyDesc.value = '';
     showAddDialog.value = false;
   }
 };
@@ -183,18 +188,23 @@ const update = () => {
     const result = props.duties.find(duty => duty.id === updateDutyId.value)
 
     result.name = updateDutyName.value;
+    result.description = updateDutyDesc.value;
     // 修改 duty
-    updateDuty(updateDutyId.value, updateDutyName.value);
+    updateDuty(updateDutyId.value, updateDutyName.value, updateDutyDesc.value);
     updateDutyName.value = '';
+    updateDutyDesc.value = '';
     updateDutyId.value = -1;
     showUpdateDialog.value = false;
   }
 };
 
 // 修改 duty 的逻辑
-const updateDutyByName = (id, name) => {
+const updateDutyByName = (id, name, description) => {
+  console.log(props.duties[0]);
+
   showUpdateDialog.value = true;
   updateDutyName.value = name;
+  updateDutyDesc.value = description;
   updateDutyId.value = id;
 }
 

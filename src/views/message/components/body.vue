@@ -35,11 +35,13 @@ const getDuties = async (date) => {
   for (let i = 0; i < res.length; i++) {
     // 如果对象存在则增加任务
     const duty = duties.value.find(duty => format(duty.date, 'yyyy-MM-dd') === format(res[i].date, 'yyyy-MM-dd'))
+    console.log(res[i]);
+
     if (duty) {
       duty.duties.push(res[i])
     } else {
       // 不存在则创建对象
-      duties.value.push({ 'id': res[i].id, 'date': new Date(res[i].date), 'duties': [res[i]] });
+      duties.value.push({ 'id': res[i].id, 'date': new Date(res[i].date), 'duties': [res[i]], 'description': res[i].description });
     }
   }
   console.log(duties.value.length);
@@ -49,13 +51,13 @@ const getDuties = async (date) => {
 const getId = (id) => { addId.value = id }
 
 watch(addId, () => {
-  // console.log('变化了');
+  console.log('addId: ', duties.value.length);
   getDuties(format(today.value, 'yyyy-MM-dd'))
 })
 
 watch(duties, () => {
-  console.log('变化了');
-
+  // console.log('变化了');
+  console.log('duties: ', duties.value.length);
 })
 
 // 初始化获取任务

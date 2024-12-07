@@ -21,24 +21,26 @@ export function delDutyByIdAPI(id) {
 }
 
 // 根据名称添加 duty
-export function addDutyAPI(name, date) {
+export function addDutyAPI(name, description, date) {
   return httpInstance({
     url: '/duty',
     method: 'POST',
     data: {
       name,
+      description,
       date
     }
   })
 }
 
 // 修改 duty
-export function updateDutyAPI(id, name) {
+export function updateDutyAPI(id, name, description) {
   return httpInstance({
     url: '/duty/' + id,
     method: 'PUT',
     data: {
-      name
+      name,
+      description
     }
   })
 }

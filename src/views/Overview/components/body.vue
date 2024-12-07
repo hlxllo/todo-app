@@ -45,7 +45,7 @@ const getDuties = async (date, page, size) => {
       const resD = new Date(res[j].date);
       const gap = parseInt((resD.getTime() - milliseconds) / d);
       if (gap === 0) {
-        arr[i].duties.push({ id: res[j].id, name: res[j].name });
+        arr[i].duties.push({ id: res[j].id, name: res[j].name, description: res[j].description });
       }
     }
   }
